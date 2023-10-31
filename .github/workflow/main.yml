@@ -10,4 +10,4 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Run yamllint
-      uses: ibiqlik/action-yamllint@v3  
+      uses: ibiqlik/action-yamllint@v3
