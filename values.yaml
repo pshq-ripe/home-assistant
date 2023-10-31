@@ -10,18 +10,8 @@ homeassistant:
   service:
     type: ClusterIP
     port: 8123
-  ingress:
-    enabled: true
-    annotations:
-      kubernetes.io/ingress.class: "traefik"
-      traefik.ingress.kubernetes.io/router.tls: "false"
-    hosts:
-      - host: castle.pshq.org
-        paths: []
-    tls:
-      - secretName: castle-tls
-        hosts:
-          - castle.pshq.org
+    externalIPs: 192.168.0.121
+    targetPort: 8123
   pvc:
     size: 10Gi
 
@@ -30,6 +20,17 @@ mariadb:
   image:
     repository: mariadb
     tag: latest
+  auth:
+    rootPassword:
+      secretKeyRef:
+        name: dbrootpw
+        key: password
+    database: "homeassistant"
+    username: "homeassistant"
+    password:
+      secretKeyRef:
+        name: dbuserpw
+        key: password  
   service:
     type: ClusterIP
     port: 3306
@@ -37,3 +38,12 @@ mariadb:
   database: homeassistant
   pvc:
     size: 10Gi
+phpmyadmin:
+  db:
+    host: mariadb
+  service:
+    type: LoadBalancer
+    externalIPs:
+      - 192.168.0.121
+  ingress:
+    enabled: false
