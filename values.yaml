@@ -1,0 +1,39 @@
+# Default values for castle.pshq.org.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+homeassistant:
+  replicaCount: 1
+  image:
+    repository: homeassistant/home-assistant
+    tag: stable
+  service:
+    type: ClusterIP
+    port: 8123
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: "traefik"
+      traefik.ingress.kubernetes.io/router.tls: "false"
+    hosts:
+      - host: castle.pshq.org
+        paths: []
+    tls:
+      - secretName: castle-tls
+        hosts:
+          - castle.pshq.org
+  pvc:
+    size: 10Gi
+
+mariadb:
+  replicaCount: 1
+  image:
+    repository: mariadb
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 3306
+  user: homeassistant
+  database: homeassistant
+  pvc:
+    size: 10Gi
