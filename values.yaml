@@ -1,9 +1,10 @@
 # Default values for castle.pshq.org.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
 homeassistant:
   replicaCount: 1
+  labels:
+     app: homeassistant
   image:
     repository: homeassistant/home-assistant
     tag: stable
@@ -23,7 +24,7 @@ mariadb:
   auth:
     rootPassword:
       secretKeyRef:
-        name: dbrootpw
+        name: mariadb-password
         key: password
     database: "homeassistant"
     username: "homeassistant"

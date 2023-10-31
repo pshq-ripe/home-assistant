@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "homeassistant.fullname" . }}
+  name: HomeAssistantService
   labels:
-    {{- include "homeassistant.labels" . | nindent 4 }}
+    {{ .Values.homeassistant.labels | toYaml | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   externalIPs: {{ .Values.homeassistant.service.externalIPs }}
@@ -12,5 +12,3 @@ spec:
       targetPort: {{ .Values.homeassistant.service.targetPort }}
       protocol: TCP
       name: http
-  selector:
-    {{- include "homeassistant.selectorLabels" . | nindent 4 }}
